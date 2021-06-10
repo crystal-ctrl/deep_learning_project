@@ -36,12 +36,12 @@ model = load_model("binary_model.h5")
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 def predict(img):
-    # img = cv.imread("./images/out.jpg")
+    # img = cv2.imread("./images/out.jpg")
     img = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)
     faces = face_cascade.detectMultiScale(img,scaleFactor=1.1, minNeighbors=8)
 
     if len(faces) > 0:
-        out_img = cv.cvtColor(img, cv2.COLOR_RGB2BGR) #colored output image
+        out_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR) #colored output image
         # resize image
         desired_height=1000
         img_height = img.shape[0]
