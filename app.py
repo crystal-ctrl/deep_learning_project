@@ -121,17 +121,17 @@ if choice == "Image":
 if choice == "Webcam":
     st.subheader('Real-time mask checking...')
     # webrtc_streamer(key="example")
-    # st.markdown("This feature will be available soon...")
-    run = st.checkbox('Open Webcam')
-    FRAME_WINDOW = st.image([])
-    camera = cv2.VideoCapture(0)
-    while run:
-        # Reading image from video stream
-        _, img = camera.read()
-        # Call method we defined above
-        # img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-        img = predict(img)
-          # st.image(img, use_column_width=True)
-        FRAME_WINDOW.image(img)
-    if not run:
-        st.write('Webcam has stopped.')
+    st.markdown("This feature will be available soon...")
+    # run = st.checkbox('Open Webcam')
+    # FRAME_WINDOW = st.image([])
+    # camera = cv2.VideoCapture(0)
+    # while run:
+    #     # Reading image from video stream
+    #     _, img = camera.read()
+    #     # Call method we defined above
+    #     # img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+    #     img = predict(img)
+    #       # st.image(img, use_column_width=True)
+    #     FRAME_WINDOW.image(img)
+    # if not run:
+    #     st.write('Webcam has stopped.')
