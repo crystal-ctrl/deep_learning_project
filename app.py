@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
-import cv2 as cv
+import cv2
 import keras
 from keras.models import load_model
 from scipy.spatial import distance
@@ -33,15 +33,15 @@ choice = st.sidebar.selectbox("", ["Home","Image","Webcam"])
 # Load the model
 model = load_model("binary_model.h5")
 # Load the cascade
-face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 def predict(img):
     # img = cv.imread("./images/out.jpg")
-    img = cv.cvtColor(img, cv.IMREAD_GRAYSCALE)
+    img = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)
     faces = face_cascade.detectMultiScale(img,scaleFactor=1.1, minNeighbors=8)
 
     if len(faces) > 0:
-        out_img = cv.cvtColor(img, cv.COLOR_RGB2BGR) #colored output image
+        out_img = cv.cvtColor(img, cv2.COLOR_RGB2BGR) #colored output image
         # resize image
         desired_height=1000
         img_height = img.shape[0]
@@ -49,23 +49,23 @@ def predict(img):
         width = int(img.shape[1] * scale)
         height = int(img.shape[0] * scale)
         dim = (width, height)
-        out_img = cv.resize(out_img, dim, interpolation = cv.INTER_AREA)
+        out_img = cv2.resize(out_img, dim, interpolation = cv2.INTER_AREA)
 
         for i in range(len(faces)):
             (x,y,w,h) = faces[i]
             x, y, w, h = int(x * scale), int(y * scale), int(w * scale), int(h * scale)
 
             crop = out_img[y:y+h,x:x+w]
-            crop = cv.resize(crop,(150,150))
+            crop = cv2.resize(crop,(150,150))
             crop = np.reshape(crop,[1,150,150,3])/255.0
             mask_result = model.predict_classes(crop)
 
             if mask_result == 0:
-                cv.putText(out_img,"With Mask",(x, y-10), cv.FONT_HERSHEY_DUPLEX,1,(102,204,0),2)
-                cv.rectangle(out_img,(x,y),(x+w,y+h),(102,204,0),5)
+                cv2.putText(out_img,"With Mask",(x, y-10), cv2.FONT_HERSHEY_DUPLEX,1,(102,204,0),2)
+                cv2.rectangle(out_img,(x,y),(x+w,y+h),(102,204,0),5)
             elif mask_result == 1:
-                cv.putText(out_img,"No Mask",(x, y-10), cv.FONT_HERSHEY_DUPLEX,1,(255,51,51),2)
-                cv.rectangle(out_img,(x,y),(x+w,y+h),(255,51,51),5)
+                cv2.putText(out_img,"No Mask",(x, y-10), cv2.FONT_HERSHEY_DUPLEX,1,(255,51,51),2)
+                cv2.rectangle(out_img,(x,y),(x+w,y+h),(255,51,51),5)
 
         # out_img = cv.cvtColor(out_img, cv.COLOR_BGR2RGB)
         return out_img
@@ -105,7 +105,7 @@ if choice == "Image":
         image = Image.open(uploaded_file) #making compatible to PIL
         # image = np.array(Image.open(uploaded_file))
         image = image.save('./images/out.jpg')
-        img = cv.imread("./images/out.jpg")
+        img = cv2.imread("./images/out.jpg")
         st.write("")
         st.write("**Image uploaded successfullly!**", use_column_width=True)
         if st.button("Detect"):
@@ -124,7 +124,7 @@ if choice == "Webcam":
     # st.markdown("This feature will be available soon...")
     run = st.checkbox('Open Webcam')
     FRAME_WINDOW = st.image([])
-    camera = cv.VideoCapture(0)
+    camera = cv2.VideoCapture(0)
     while run:
         # Reading image from video stream
         _, img = camera.read()
